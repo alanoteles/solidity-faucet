@@ -14,4 +14,15 @@ contract Test {
             data := mload(0x90)
         }
     }
+
+
+    function test2() external pure returns(uint data) {
+
+        assembly {
+            let fmp := mload(0x40)
+            //hello
+            mstore(add(fmp, 0x00), 0x68656C6C6F)
+            data := mload(add(fmp, 0x00))
+        }
+    }
 }
