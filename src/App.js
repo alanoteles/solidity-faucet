@@ -8,12 +8,14 @@ function App() {
     web3: null
   })
 
+  const [account, setAccount] = useState(null)
+
   useEffect(() => {
     const loadProvider = async () => {
-      const provider = null;
+      let provider = null;
       // if we have Metamask browser extension installed, it will use it.
       if (window.ethereum) {
-        let provider = window.ethereum;
+        provider = window.ethereum;
 
         try {
           await provider.enable();
@@ -40,13 +42,26 @@ function App() {
     loadProvider();
   }, [])
 
-  console.log(web3Api.web3);
+  useEffect(() => {
+    const getAccount = async () => {
+      const accounts = await web3Api.web3.eth.getAccounts()
+      setAccount(accounts[0])
+    }
+    web3Api.web3 && getAccount()
+  }, [web3Api.web3])
+  // console.log(web3Api.web3);
   
 
   return (
     <>
       <div className="faucet-wrapper">
         <div className="faucet">
+          <span>
+            <strong>Account: </strong>
+          </span>
+          <h1>
+            { account ? account : "not connected"}
+          </h1>
           <div className="balance-view is-size-2">
             Current balance: <strong>10</strong>
           </div>
